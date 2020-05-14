@@ -1,3 +1,6 @@
+body {
+  background-color: #f1f2f7
+}
 #field {
   width: 555px;
   height: 555px;
@@ -7,7 +10,7 @@
   background-color: #eee;
 }
 
-.block {
+.empty-block {
   width: 48px;
   height: 48px;
   margin: 5px 0 0 5px;
@@ -16,7 +19,16 @@
   background-color: #ffff00;
 }
 
-.block-black {
+.snake-block {
+  width: 48px;
+  height: 48px;
+  margin: 5px 0 0 5px;
+  float: left;
+  border: 1px solid #000;
+  background-color: #087e26;
+}
+
+.head-snake-block {
   width: 48px;
   height: 48px;
   margin: 5px 0 0 5px;
