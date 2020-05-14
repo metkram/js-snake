@@ -1,34 +1,50 @@
 "use strict";
 class Snake {
   constructor() {
-    this.posX = 0;
-    this.posY = 5;
+    this.snakeCoordinates = [[0, 5], [0, 6], [0, 7], [1, 7], [1, 8]];
+    // this.posX = 0;
+    // this.posY = 5;
+    // this.tail = [[this.posX, this.posY + 1], [this.posX, this.posY + 2]];
     this.direction = [0, -1];
-    this.position = this.posY * 10 + this.posX;
-  }
-  step() {
-    randomDiv[this.position].className = "block";
-    if (this.posX == 0 && this.posY == 0) {
-      this.direction = [1, 0];
-    } else if (this.posX == 9 && this.posY == 0) {
-      this.direction = [0, 1];
-    } else if (this.posX == 9 && this.posY == 9) {
-      this.direction = [-1, 0];
-    } else if (this.posX == 0 && this.posY == 9) {
-      this.direction = [0, -1];
+    // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
+    for (let i of this.snakeCoordinates) {
+      randomDiv[i[1] * 10 + i[0]].className = "block-black";
     }
 
-    this.posX += this.direction[0];
-    this.posY += this.direction[1];
+    // for (let i of this.tail) {
+    //   randomDiv[10 * i[1] + i[0]].className = "block-black";
+    // }
+  }
+  step() {
+    // randomDiv[this.snakeCoordinates[1][1] * 10 + this.snakeCoordinates[1][0]].className = "block";
+    randomDiv[this.snakeCoordinates[this.snakeCoordinates.length - 1][1] * 10 + this.snakeCoordinates[this.snakeCoordinates.length - 1][0]].className = "block";
+    if (this.snakeCoordinates[0][0] == 0 && this.snakeCoordinates[0][1] == 0) {
+      this.direction = [1, 0];
+    } else if (this.snakeCoordinates[0][0] == 9 && this.snakeCoordinates[0][1] == 0) {
+      this.direction = [0, 1];
+    } else if (this.snakeCoordinates[0][0] == 9 && this.snakeCoordinates[0][1] == 9) {
+      this.direction = [-1, 0];
+    } else if (this.snakeCoordinates[0][0] == 0 && this.snakeCoordinates[0][1] == 9) {
+      this.direction = [0, -1];
+    }
+    for (let i = this.snakeCoordinates.length - 1; i > 0 ; i--) {
+      this.snakeCoordinates[i][0] = this.snakeCoordinates[i - 1][0];
+      this.snakeCoordinates[i][1] = this.snakeCoordinates[i - 1][1];
+      console.log(i);
+    }
+    this.snakeCoordinates[0][0] += this.direction[0];
+    this.snakeCoordinates[0][1] += this.direction[1];
 
-    console.log(this.posX, this.posY);
-    this.position = this.posY * 10 + this.posX;
-    randomDiv[this.position].className = "block-black";
+
+    // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
+
+    for (let i of this.snakeCoordinates) {
+      randomDiv[i[1] * 10 + i[0]].className = "block-black";
+    }
   }
 }
 let randomDiv = document.querySelector("#field").querySelectorAll("div");
 let newSnake = new Snake();
-console.log(newSnake);
 setInterval(() => newSnake.step(), 1000);
 
 
