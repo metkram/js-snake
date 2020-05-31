@@ -32,7 +32,7 @@ class Snake {
     for (let i = this.snakeCoordinates.length - 1; i > 0 ; i--) {
       this.snakeCoordinates[i][0] = this.snakeCoordinates[i - 1][0];
       this.snakeCoordinates[i][1] = this.snakeCoordinates[i - 1][1];
-      console.log(i);
+      //console.log(i);
     }
     this.snakeCoordinates[0][0] += this.direction[0];
     this.snakeCoordinates[0][1] += this.direction[1];
@@ -52,9 +52,28 @@ class Snake {
     // }
   }
 }
+
+function changeDirection(event) {
+  switch(event.code) {
+    case "ArrowUp":
+      newSnake.direction = [0, -1];
+      break;
+    case "ArrowDown":
+      newSnake.direction = [0, 1];
+      break;
+    case "ArrowLeft":
+      newSnake.direction = [-1, 0];
+      break;
+    case "ArrowRight":
+      newSnake.direction = [1, 0];
+      break;
+  }
+}
+
 let randomDiv = document.querySelector("#field").querySelectorAll("div");
 let newSnake = new Snake();
 setInterval(() => newSnake.step(), 1000);
+document.addEventListener("keydown", changeDirection);
 
 
 
