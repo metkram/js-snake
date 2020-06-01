@@ -102,15 +102,19 @@ function changeDirection(event) {
   switch(event.code) {
     case "ArrowUp":
       console.log("up");
+      if (newSnake.snakeCoordinates[0][1] > newSnake.snakeCoordinates[1][1] || newSnake.snakeCoordinates[0][1] == 0) break;
       newSnake.direction = [0, -1];
       break;
     case "ArrowDown":
+      if (newSnake.snakeCoordinates[0][1] < newSnake.snakeCoordinates[1][1] || newSnake.snakeCoordinates[0][1] == 9) break;
       newSnake.direction = [0, 1];
       break;
     case "ArrowLeft":
+      if (newSnake.snakeCoordinates[0][0] > newSnake.snakeCoordinates[1][0] || newSnake.snakeCoordinates[0][0] == 0) break;
       newSnake.direction = [-1, 0];
       break;
     case "ArrowRight":
+      if (newSnake.snakeCoordinates[0][0] < newSnake.snakeCoordinates[1][0] || newSnake.snakeCoordinates[0][0] == 9) break;
       newSnake.direction = [1, 0];
       break;
   }
