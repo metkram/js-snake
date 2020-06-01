@@ -2,6 +2,7 @@
 class Snake {
   constructor() {
     this.snakeCoordinates = [[0, 5], [0, 6], [0, 7], [1, 7], [1, 8]];
+    this.direction = [0, -1];
     this.field = document.createElement("div");
     this.field.id = "field";
     for (let i = 0; i < 100; i++) {
@@ -11,10 +12,13 @@ class Snake {
       this.field.append(block);
     }
     this.blocks = this.field.querySelectorAll("div");
+    this.food = {
+      position: this.newFood(),
+      eatable: true
+    };
     // this.posX = 0;
     // this.posY = 5;
     // this.tail = [[this.posX, this.posY + 1], [this.posX, this.posY + 2]];
-    this.direction = [0, -1];
     // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
     // for (let i = 0; i < this.snakeCoordinates.length; i++) {
     //   if (i == 0) {
@@ -43,6 +47,19 @@ class Snake {
       }
       this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "snake-block";
     }
+    this.blocks[this.food.position[1] * 10 + this.food.position[0]].className = "food-block";
+  }
+
+  newFood() {
+    let x = Math.round(Math.random() * 9), y = Math.round(Math.random() * 9);
+    for (let coodrinate of this.snakeCoordinates) {
+      if (coodrinate[0] == x && coodrinate[1] == y) {
+        console.log("one more time", x, y);
+        x = this.newFood()[0];
+        y = this.newFood()[1];
+      }
+    }
+    return [x, y];
   }
 
   step() {
@@ -121,7 +138,7 @@ function changeDirection(event) {
 }
 
 let newSnake = new Snake();
-setInterval(() => newSnake.step(), 150);
+setInterval(() => newSnake.step(), 1500);
 document.addEventListener("keydown", changeDirection);
 
 function randomBlock() {
@@ -129,3 +146,4 @@ function randomBlock() {
   return randomNum;
 }
 //setInterval(() => randomDiv[randomBlock()].className = "block-black", 100);
+//console.log(newSnake.food.position);
