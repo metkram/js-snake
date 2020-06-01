@@ -39,18 +39,16 @@ class Snake {
     for (let i = 0; i < 100; i++) {
       this.blocks[i].className = "empty-block";
     }
-
-    for (let i = 0; i < this.snakeCoordinates.length; i++) {
-      if (i == 0) {
-        this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "head-snake-block";
-        continue;
-      }
+    this.blocks[this.food.position[1] * 10 + this.food.position[0]].className = "food-block";
+    for (let i = 1; i < this.snakeCoordinates.length; i++) {
       this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "snake-block";
     }
-    this.blocks[this.food.position[1] * 10 + this.food.position[0]].className = "food-block";
+    this.blocks[this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0]].className = "head-snake-block";
+
+    console.log(this.snakeCoordinates.length);
   }
 
-  newFood() {
+  newFood() { //have to rewrite this function, when shake becomes long it crushes game
     let x = Math.round(Math.random() * 9), y = Math.round(Math.random() * 9);
     for (let coodrinate of this.snakeCoordinates) {
       if (coodrinate[0] == x && coodrinate[1] == y) {
@@ -80,8 +78,9 @@ class Snake {
     for (let i = this.snakeCoordinates.length - 1; i > 0 ; i--) {
       this.snakeCoordinates[i][0] = this.snakeCoordinates[i - 1][0];
       this.snakeCoordinates[i][1] = this.snakeCoordinates[i - 1][1];
-      //console.log(i);
+      console.log(this.snakeCoordinates[i][0], this.snakeCoordinates[i][1]);
     }
+    console.log("");
     this.snakeCoordinates[0][0] += this.direction[0];
     this.snakeCoordinates[0][1] += this.direction[1];
     //teleport move
@@ -97,11 +96,18 @@ class Snake {
     if (this.snakeCoordinates[0][1] == -1) {
       this.snakeCoordinates[0][1] = 9;
     }
-
+    this.fieldRender();
+    //eat food
+    if (this.snakeCoordinates[0][0] == this.food.position[0] && this.snakeCoordinates[0][1] == this.food.position[1]) {
+      this.snakeCoordinates = this.snakeCoordinates.concat([this.food.position]);
+      this.food.position = this.newFood();
+      //this.snakeCoordinates.push(this.snakeCoordinates[this.snakeCoordinates.length - 1]);
+      console.log(this.snakeCoordinates);
+    }
 
     // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
     //rendering of snake coordinates
-    this.fieldRender();
+
     // for (let i = 0; i < this.snakeCoordinates.length; i++) {
     //   if (i == 0) {
     //     this.blocks[this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0]].className = "head-snake-block";
@@ -138,7 +144,7 @@ function changeDirection(event) {
 }
 
 let newSnake = new Snake();
-setInterval(() => newSnake.step(), 1500);
+setInterval(() => newSnake.step(), 500);
 document.addEventListener("keydown", changeDirection);
 
 function randomBlock() {
