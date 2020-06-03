@@ -83,6 +83,15 @@ class Snake {
     console.log("");
     this.snakeCoordinates[0][0] += this.direction[0];
     this.snakeCoordinates[0][1] += this.direction[1];
+    //hit the tail
+    for (let i = 1; i < this.snakeCoordinates.length; i++) {
+      if (this.snakeCoordinates[0][0] == this.snakeCoordinates[i][0] && this.snakeCoordinates[0][1] == this.snakeCoordinates[i][1]) {
+        alert("hit the tail");
+        this.direction = [0, -1];
+        this.snakeCoordinates = [[0, 5], [0, 6], [0, 7], [1, 7], [1, 8]];
+        this.food.position = newFood();
+      }
+    }
     //teleport move
     if (this.snakeCoordinates[0][0] == -1) {
       this.snakeCoordinates[0][0] = 9;
@@ -104,6 +113,8 @@ class Snake {
       //this.snakeCoordinates.push(this.snakeCoordinates[this.snakeCoordinates.length - 1]);
       console.log(this.snakeCoordinates);
     }
+
+
 
     // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
     //rendering of snake coordinates
