@@ -3,15 +3,17 @@ class Snake {
   constructor() {
     this.snakeCoordinates = [[0, 5], [0, 6], [0, 7], [1, 7], [1, 8]];
     this.direction = [0, -1];
-    this.field = document.createElement("div");
-    this.field.id = "field";
-    for (let i = 0; i < 100; i++) {
-      let block = document.createElement("div");
-      block.className = "empty-block";
-      block.innerHTML = i;
-      this.field.append(block);
-    }
-    this.blocks = this.field.querySelectorAll("div");
+    this.field = new Field();
+    // this.field = document.createElement("div");
+    // this.field.id = "field";
+    // for (let i = 0; i < 100; i++) {
+    //   let block = document.createElement("div");
+    //   block.className = "empty-block";
+    //   block.innerHTML = i;
+    //   this.field.append(block);
+    // }
+    // this.blocks = this.field.querySelectorAll("div");
+
     this.food = new Food(this.snakeCoordinates);
     // this.posX = 0;
     // this.posY = 5;
@@ -24,26 +26,27 @@ class Snake {
     //   }
     //   this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "snake-block";
     // }
-    this.fieldRender();
 
-    document.body.append(this.field);
+
+    document.body.append(this.field.field);
+    this.field.fieldRender(this.snakeCoordinates, this.food.position);
     // for (let i of this.tail) {
     //   randomDiv[10 * i[1] + i[0]].className = "block-black";
     // }
   }
 
-  fieldRender() {
-    for (let i = 0; i < 100; i++) {
-      this.blocks[i].className = "empty-block";
-    }
-    this.blocks[this.food.position[1] * 10 + this.food.position[0]].className = "food-block";
-    for (let i = 1; i < this.snakeCoordinates.length; i++) {
-      this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "snake-block";
-    }
-    this.blocks[this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0]].className = "head-snake-block";
-
-    console.log(this.snakeCoordinates.length);
-  }
+  // fieldRender() {
+  //   for (let i = 0; i < 100; i++) {
+  //     this.blocks[i].className = "empty-block";
+  //   }
+  //   this.blocks[this.food.position[1] * 10 + this.food.position[0]].className = "food-block";
+  //   for (let i = 1; i < this.snakeCoordinates.length; i++) {
+  //     this.blocks[this.snakeCoordinates[i][1] * 10 + this.snakeCoordinates[i][0]].className = "snake-block";
+  //   }
+  //   this.blocks[this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0]].className = "head-snake-block";
+  //
+  //   console.log(this.snakeCoordinates.length);
+  // }
 
   step() {
     // randomDiv[this.snakeCoordinates[1][1] * 10 + this.snakeCoordinates[1][0]].className = "block";
@@ -90,7 +93,7 @@ class Snake {
     if (this.snakeCoordinates[0][1] == -1) {
       this.snakeCoordinates[0][1] = 9;
     }
-    this.fieldRender();
+    this.field.fieldRender(this.snakeCoordinates, this.food.position);
     //eat food
     if (this.snakeCoordinates[0][0] == this.food.position[0] && this.snakeCoordinates[0][1] == this.food.position[1]) {
       this.snakeCoordinates = this.snakeCoordinates.concat([this.food.position]);
@@ -131,6 +134,33 @@ class Food {
       }
     }
     return [x, y];
+  }
+}
+
+class Field {
+  constructor() {
+    this.field = document.createElement("div");
+    this.field.id = "field";
+    for (let i = 0; i < 100; i++) {
+      let block = document.createElement("div");
+      block.className = "empty-block";
+      block.innerHTML = i;
+      this.field.append(block);
+    }
+    this.blocks = this.field.querySelectorAll("div");
+  }
+
+  fieldRender(snakeCoordinates, foodPosition) {
+    for (let i = 0; i < 100; i++) {
+      this.blocks[i].className = "empty-block";
+    }
+    this.blocks[foodPosition[1] * 10 + foodPosition[0]].className = "food-block";
+    for (let i = 1; i < snakeCoordinates.length; i++) {
+      this.blocks[snakeCoordinates[i][1] * 10 + snakeCoordinates[i][0]].className = "snake-block";
+    }
+    this.blocks[snakeCoordinates[0][1] * 10 + snakeCoordinates[0][0]].className = "head-snake-block";
+
+    console.log(snakeCoordinates.length);
   }
 }
 
