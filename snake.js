@@ -57,11 +57,15 @@ class Game {
     this.field.fieldRender(this.snake.snakeCoordinates, this.food.position);
     //eat food
     if (this.snake.snakeCoordinates[0][0] == this.food.position[0] && this.snake.snakeCoordinates[0][1] == this.food.position[1]) {
-      this.snake.snakeCoordinates = this.snake.snakeCoordinates.concat([this.food.position]);
-      this.food = new Food(this.snake.snakeCoordinates);
-      //this.snakeCoordinates.push(this.snakeCoordinates[this.snakeCoordinates.length - 1]);
-      // console.log(this.snake.snakeCoordinates);
+      this.eatFood();
     }
+
+    // if (this.snake.snakeCoordinates[0][0] == this.food.position[0] && this.snake.snakeCoordinates[0][1] == this.food.position[1]) {
+    //   this.snake.snakeCoordinates = this.snake.snakeCoordinates.concat([this.food.position]);
+    //   this.food = new Food(this.snake.snakeCoordinates);
+    //   //this.snakeCoordinates.push(this.snakeCoordinates[this.snakeCoordinates.length - 1]);
+    //   // console.log(this.snake.snakeCoordinates);
+    // }
 
 
     // this.position = this.snakeCoordinates[0][1] * 10 + this.snakeCoordinates[0][0];
@@ -79,23 +83,31 @@ class Game {
     // }
   }
 
-  changeDirection(event) {
+  eatFood() {
+      this.snake.snakeCoordinates = this.snake.snakeCoordinates.concat([this.food.position]);
+      this.food = new Food(this.snake.snakeCoordinates);
+      console.log(this.food.position);
+      //this.snakeCoordinates.push(this.snakeCoordinates[this.snakeCoordinates.length - 1]);
+      // console.log(this.snake.snakeCoordinates);
+  }
+
+  changeDirection(event) {//if quichly press buttons snake can start move against its direction and it'll generate "hit the tail situation"
     switch(event) {
       case "ArrowUp":
         console.log(this.snake);
-        if (this.snake.snakeCoordinates[0][1] > this.snake.snakeCoordinates[1][1] || this.snake.snakeCoordinates[0][1] == 0) break;
+        if (this.snake.direction[0] == 0 && this.snake.direction[1] == 1) break;
         this.snake.direction = [0, -1];
         break;
       case "ArrowDown":
-        if (this.snake.snakeCoordinates[0][1] < this.snake.snakeCoordinates[1][1] || this.snake.snakeCoordinates[0][1] == 9) break;
+        if (this.snake.direction[0] == 0 && this.snake.direction[1] == -1) break;
         this.snake.direction = [0, 1];
         break;
       case "ArrowLeft":
-        if (this.snake.snakeCoordinates[0][0] > this.snake.snakeCoordinates[1][0] || this.snake.snakeCoordinates[0][0] == 0) break;
+        if (this.snake.direction[0] == 1 && this.snake.direction[1] == 0) break;
         this.snake.direction = [-1, 0];
         break;
       case "ArrowRight":
-        if (this.snake.snakeCoordinates[0][0] < this.snake.snakeCoordinates[1][0] || this.snake.snakeCoordinates[0][0] == 9) break;
+        if (this.snake.direction[0] == -1 && this.snake.direction[1] == 0) break;
         this.snake.direction = [1, 0];
         break;
     }
@@ -226,16 +238,30 @@ class Food {
   constructor(coordinates) {
     this.position = this.newFood(coordinates);
   }
-  newFood(snakeCoordinates) { //have to rewrite this function, when shake becomes long it crushes game
-    let x = Math.round(Math.random() * 9), y = Math.round(Math.random() * 9);
-    for (let coodrinate of snakeCoordinates) {
-      if (coodrinate[0] == x && coodrinate[1] == y) {
-        console.log("one more time", x, y);
-        x = this.newFood(snakeCoordinates)[0];
-        y = this.newFood(snakeCoordinates)[1];
+  newFood(snakeCoordinates) { //have to find solution how to exclude next step block, maybe it's not necessary
+    let foodCoordinates = [];
+
+    for (let i = 0; i < 10; i++) {
+      for (let u = 0; u < 10; u++) {
+        let isPossible = true;
+        for (let coordinate of snakeCoordinates) {
+          if (coordinate[0] == i && coordinate[1] == u) isPossible = false;
+        }
+        if (isPossible) foodCoordinates.push([i, u]);
       }
     }
-    return [x, y];
+
+    // let x = Math.round(Math.random() * 9), y = Math.round(Math.random() * 9);
+    // for (let coodrinate of snakeCoordinates) {
+    //   if (coodrinate[0] == x && coodrinate[1] == y) {
+    //     console.log("one more time", x, y);
+    //     let tempFood = this.newFood(snakeCoordinates);
+    //     x = tempFood[0];
+    //     y = tempFood[1];
+    //   }
+    // }
+    console.log(foodCoordinates);
+    return foodCoordinates[Math.round(Math.random() * foodCoordinates.length)];
   }
 }
 
