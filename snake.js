@@ -261,7 +261,7 @@ class Food {
     //   }
     // }
     console.log(foodCoordinates);
-    return foodCoordinates[Math.round(Math.random() * foodCoordinates.length)];
+    return foodCoordinates[Math.floor(Math.random() * foodCoordinates.length)];
   }
 }
 
